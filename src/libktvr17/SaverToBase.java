@@ -9,42 +9,85 @@ import entity.Book;
 import entity.History;
 import entity.Reader;
 import interfaces.Saveble;
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 
 /**
  *
  * @author Melnikov
  */
 public class SaverToBase implements Saveble{
+    private EntityManager em;
+    private EntityTransaction tx;
 
+    public SaverToBase() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("LibProPtvr16PU");
+        this.em = emf.createEntityManager();
+        this.tx = em.getTransaction();
+    }
+    
     @Override
     public void saveHistories(List<History> histories) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int n = histories.size();
+        this.tx.begin();
+        for(int i=0;i<n;i++){
+            if(histories.get(i).getId() == null){
+               em.persist(histories.get(i)); 
+            }else{
+               em.merge(histories.get(i));
+            }
+        }
+        this.tx.commit();
     }
 
     @Override
     public void saveReaders(List<Reader> readers) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int n = readers.size();
+        this.tx.begin();
+        for(int i=0;i<n;i++){
+            if(readers.get(i).getId() == null){
+               em.persist(readers.get(i)); 
+            }else{
+               em.merge(readers.get(i));
+            }
+        }
+        this.tx.commit();
     }
 
     @Override
     public void saveBooks(List<Book> books) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int n = books.size();
+        this.tx.begin();
+        for(int i=0;i<n;i++){
+            if(books.get(i).getId() == null){
+               em.persist(books.get(i)); 
+            }else{
+               em.merge(books.get(i));
+            }
+            
+        }
+        this.tx.commit();
     }
 
     @Override
     public List<History> loadHistories() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<History> listHistory = em.createQuery("SELECT h FROM History h").getResultList();
+        return listHistory;
     }
-
     @Override
     public List<Reader> loadReaders() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Reader> listReader = em.createQuery("SELECT r FROM Reader r").getResultList();
+        return listReader;
     }
 
     @Override
     public List<Book> loadBooks() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Book> listBook = em.createQuery("SELECT b FROM Book b").getResultList();
+        return listBook;
     }
     
 }
