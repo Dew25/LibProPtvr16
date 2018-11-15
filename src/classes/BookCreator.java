@@ -24,7 +24,15 @@ public class BookCreator {
         book.setAuthor(scanner.nextLine());
         System.out.println("ISBN:");
         book.setIsbn(scanner.nextLine());
-        return book;
+        System.out.println(book.toString());
+        System.out.println("Для добавления книги нажмите 1");
+        int n=scanner.nextInt();
+        if(n==1){
+            return book;
+        }else{
+            return null;
+        }
+        
     }
     
 }

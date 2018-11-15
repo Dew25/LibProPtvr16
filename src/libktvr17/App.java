@@ -28,8 +28,8 @@ public class App {
     public Saveble saver;
 
     public App() {
-        //this.saver = new SaverToFile();
-        this.saver = new SaverToBase();
+        this.saver = new SaverToFile();
+        //this.saver = new SaverToBase();
         this.books=saver.loadBooks();
         this.readers = saver.loadReaders();
         this.histories = saver.loadHistories();
@@ -54,9 +54,14 @@ public class App {
                     repeat = "n";
                     break;
                 case "1":
-                    this.books.add(inserter.addBook());
-                    saver.saveBooks(books);
-                    System.out.println("Книга добавлена!");
+                    Book book = inserter.addBook();
+                    if(book != null){
+                        this.books.add(book);
+                        saver.saveBooks(books);
+                        System.out.println("Книга добавлена!");
+                    }else{
+                        System.out.println("Книгу добавить не удалось!");
+                    }
                     break;
                 case "2":
                     this.readers.add(inserter.addReader());
